@@ -428,61 +428,61 @@ void tst_AccountInterface::serviceConfigurationValues()
     QScopedPointer<AccountInterface> account(new AccountInterface);
     account->classBegin();
     account->setProviderName("test-provider");
-    QCOMPARE(account->configurationValues(testServiceName), QVariantMap());
+    QCOMPARE(account->serviceConfigurationValues(testServiceName), QVariantMap());
     QSignalSpy spy(account.data(), SIGNAL(configurationValuesChanged()));
     account->setConfigurationValues(testData, testServiceName);
     int currentCount = spy.count();
-    QCOMPARE(account->configurationValues(testServiceName), testData);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName), testData);
     account->removeConfigurationValue(testKey, testServiceName);
     QCOMPARE(spy.count(), currentCount); // shouldn't emit - the configurationValuesChanged() signal is for global config values only.
-    QCOMPARE(account->configurationValues(testServiceName), QVariantMap());
+    QCOMPARE(account->serviceConfigurationValues(testServiceName), QVariantMap());
 
     // invalid values
     account->setConfigurationValue(testKey, QVariant(QColor(Qt::black)), testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName), QVariantMap()); // not set.
+    QCOMPARE(account->serviceConfigurationValues(testServiceName), QVariantMap()); // not set.
     account->setConfigurationValue(testKey, QVariant(), testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName), QVariantMap()); // not set.
+    QCOMPARE(account->serviceConfigurationValues(testServiceName), QVariantMap()); // not set.
 
     // bool, int, quint64 and string should all work.
     account->setConfigurationValue(testKey, testBoolValue, testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testBoolValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testBoolValue);
     account->setConfigurationValue(testKey, testIntValue, testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testIntValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testIntValue);
     account->setConfigurationValue(testKey, testQuintValue, testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testQuintValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testQuintValue);
     account->setConfigurationValue(testKey, testStrValue, testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testStrValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testStrValue);
     account->setConfigurationValue(testKey, testStrListValue, testServiceName);
     QCOMPARE(spy.count(), currentCount);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testStrListValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testStrListValue);
 
     // ensure that configuration values can be saved.
     account->sync(); // pending sync.
     account->componentComplete(); // will create new account.
     QTRY_COMPARE(account->status(), AccountInterface::Synced);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testStrListValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testStrListValue);
     account->setConfigurationValue(testKey, testStrValue, testServiceName);
     account->sync();
     QTRY_COMPARE(account->status(), AccountInterface::Synced);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testStrValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testStrValue);
     account->setConfigurationValue(testKey, testQuintValue, testServiceName);
     account->sync();
     QTRY_COMPARE(account->status(), AccountInterface::Synced);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testQuintValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testQuintValue);
     account->setConfigurationValue(testKey, testIntValue, testServiceName);
     account->sync();
     QTRY_COMPARE(account->status(), AccountInterface::Synced);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testIntValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testIntValue);
     account->setConfigurationValue(testKey, testBoolValue, testServiceName);
     account->sync();
     QTRY_COMPARE(account->status(), AccountInterface::Synced);
-    QCOMPARE(account->configurationValues(testServiceName).value(testKey), testBoolValue);
+    QCOMPARE(account->serviceConfigurationValues(testServiceName).value(testKey), testBoolValue);
 
     // ensure that configuration values from subgroups are reported correctly.
     // and ensure that stringlist configuration values are reported correctly.
@@ -506,8 +506,8 @@ void tst_AccountInterface::serviceConfigurationValues()
     existingAccount->setIdentifier(account->identifier());
     existingAccount->componentComplete(); // will load existing account
     QTRY_COMPARE(existingAccount->status(), AccountInterface::Initialized);
-    QCOMPARE(existingAccount->configurationValues(testServiceName).value(QString("%1/%2").arg(testGroup).arg(testKey)), testStrValue);
-    QCOMPARE(existingAccount->configurationValues(testServiceName).value(testKey), testStrListValue);
+    QCOMPARE(existingAccount->serviceConfigurationValues(testServiceName).value(QString("%1/%2").arg(testGroup).arg(testKey)), testStrValue);
+    QCOMPARE(existingAccount->serviceConfigurationValues(testServiceName).value(testKey), testStrListValue);
 
     // and ensure that changes are really synced
     account->setConfigurationValue(testKey, testStrValue, testServiceName);
