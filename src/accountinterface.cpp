@@ -759,7 +759,7 @@ void AccountInterface::removeConfigurationValue(const QString &key, const QStrin
 }
 
 /*!
-    \qmlmethod QVariantMap Account::configurationValues(const QString &serviceName)
+    \qmlmethod QVariantMap Account::serviceConfigurationValues(const QString &serviceName)
 
     Returns the configuration settings for the account which apply
     specifically to the service with the specified \a serviceName.
@@ -774,7 +774,7 @@ void AccountInterface::removeConfigurationValue(const QString &key, const QStrin
     If the specified \a serviceName is empty, the account's global
     configuration settings will be returned instead.
 */
-QVariantMap AccountInterface::configurationValues(const QString &serviceName) const
+QVariantMap AccountInterface::serviceConfigurationValues(const QString &serviceName) const
 {
     if (d->status == AccountInterface::Invalid)
         return QVariantMap();
