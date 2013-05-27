@@ -1,0 +1,33 @@
+Name: nemo-qml-plugin-accounts-qt5
+Summary: Accounts plugin for Nemo Mobile
+URL: https://github.com/nemomobile/nemo-qml-plugin-accounts
+Group: System/Libraries
+Description: "%{summary}."
+Version: 0.0.0
+Release: 1
+Sources:
+    - "%{name}-%{version}.tar.bz2"
+License: BSD
+Configure: none
+Builder: qmake5
+PkgConfigBR:
+    - Qt5Core
+    - Qt5Qml
+    - Qt5Gui
+    - Qt5Test
+    - accounts-qt5
+# Qt5Gui needed for tests
+Files:
+    - "%{_libdir}/qt5/qml/org/nemomobile/accounts/libnemoaccounts.so"
+    - "%{_libdir}/qt5/qml/org/nemomobile/accounts/qmldir"
+SubPackages:
+    - Name: tests
+      Summary: QML accounts plugin tests
+      Group: System/Libraries
+      Description: "%{summary}."
+      Files:
+          - "/opt/tests/nemo-qml-plugins-qt5/accounts/*"
+          - "%{_datadir}/accounts/providers/test-provider.provider"
+          - "%{_datadir}/accounts/services/test-service2.service"
+          - "%{_datadir}/accounts/service_types/test-service-type2.service-type"
+

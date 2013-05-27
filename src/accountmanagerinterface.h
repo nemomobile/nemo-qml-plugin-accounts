@@ -33,7 +33,16 @@
 #define ACCOUNTMANAGERINTERFACE_H
 
 #include <QtCore/QObject>
-#include <QtDeclarative/QDeclarativeParserStatus>
+
+#include <QtGlobal>
+#if QT_VERSION_5
+#include <QtQml>
+#include <QQmlParserStatus>
+#define QDeclarativeParserStatus QQmlParserStatus
+#else
+#include <qdeclarative.h>
+#include <QDeclarativeParserStatus>
+#endif
 
 #include <QtCore/QStringList>
 #include <QtCore/QString>

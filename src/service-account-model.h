@@ -34,6 +34,7 @@
 
 //accounts-qt
 #include <Accounts/Manager>
+#include <Accounts/AccountService>
 
 //Qt
 #include <QAbstractTableModel>
@@ -92,6 +93,11 @@ public:
 
     Q_INVOKABLE ProviderInterface *provider(const QString &providerName, QObject *parent = 0);
     Q_INVOKABLE ProviderInterface *provider(int accountId, QObject *parent = 0);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+protected:
+    QHash<int, QByteArray> roleNames() const;
+#endif
 
 private slots:
     void accountCreated(Accounts::AccountId id);
