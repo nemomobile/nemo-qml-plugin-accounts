@@ -30,9 +30,18 @@
  */
 
 #include <QtGlobal>
-#include <QtDeclarative>
-#include <QDeclarativeEngine>
-#include <QDeclarativeExtensionPlugin>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QtQml>
+# include <QQmlEngine>
+# include <QQmlExtensionPlugin>
+# define QDeclarativeEngine QQmlEngine
+# define QDeclarativeExtensionPlugin QQmlExtensionPlugin
+#else
+# include <QtDeclarative>
+# include <QDeclarativeEngine>
+# include <QDeclarativeExtensionPlugin>
+#endif
 
 #include "account-model.h"
 #include "account-provider-model.h"
@@ -47,6 +56,10 @@
 
 class Q_DECL_EXPORT NemoAccountsPlugin : public QDeclarativeExtensionPlugin
 {
+    Q_OBJECT
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    Q_PLUGIN_METADATA(IID "org.nemomobile.accounts")
+#endif
 public:
     virtual ~NemoAccountsPlugin() { }
 
@@ -79,5 +92,8 @@ public:
     }
 };
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(nemoaccounts, NemoAccountsPlugin);
+#endif
 
+#include "plugin.moc"

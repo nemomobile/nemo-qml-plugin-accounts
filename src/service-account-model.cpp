@@ -94,7 +94,9 @@ ServiceAccountModel::ServiceAccountModel(QObject* parent)
                      this, SLOT(accountUpdated(Accounts::AccountId)));
     QObject::connect(d->manager, SIGNAL(enabledEvent(Accounts::AccountId)),
                      this, SLOT(accountUpdated(Accounts::AccountId)));
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     setRoleNames(d->headerData);
+#endif
     Accounts::AccountIdList idList = d->manager->accountList();
     foreach (Accounts::AccountId id, idList)
     {
@@ -112,6 +114,14 @@ ServiceAccountModel::ServiceAccountModel(QObject* parent)
 ServiceAccountModel::~ServiceAccountModel()
 {
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+QHash<int, QByteArray> ServiceAccountModel::roleNames() const
+{
+    Q_D(const ServiceAccountModel);
+    return d->headerData;
+}
+#endif
 
 int ServiceAccountModel::rowCount(const QModelIndex &parent) const
 {

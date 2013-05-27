@@ -105,6 +105,11 @@ public:
     Q_INVOKABLE ProviderInterface *provider(const QString &providerName, QObject *parent = 0);
     Q_INVOKABLE ProviderInterface *provider(int accountId, QObject *parent = 0);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+protected:
+    QHash<int, QByteArray> roleNames() const;
+#endif
+
 private slots:
     void accountCreated(Accounts::AccountId id);
     void accountRemoved(Accounts::AccountId id);

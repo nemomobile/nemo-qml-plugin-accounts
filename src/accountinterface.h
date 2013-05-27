@@ -36,7 +36,16 @@
 #include <QtCore/QVariantMap>
 #include <QtCore/QStringList>
 #include <QtCore/QString>
-#include <QtDeclarative/QDeclarativeParserStatus>
+
+#include <QtGlobal>
+#if QT_VERSION_5
+#include <QtQml>
+#include <QQmlParserStatus>
+#define QDeclarativeParserStatus QQmlParserStatus
+#else
+#include <qdeclarative.h>
+#include <QDeclarativeParserStatus>
+#endif
 
 //libaccounts-qt
 #include <Accounts/Account>

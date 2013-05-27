@@ -116,6 +116,11 @@ public:
      */
     Q_INVOKABLE ProviderInterface *provider(const QString &providerName, QObject *parent = 0);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+protected:
+    QHash<int, QByteArray> roleNames() const;
+#endif
+
 private:
     AccountProviderModelPrivate* d_ptr;
     Q_DISABLE_COPY(AccountProviderModel)

@@ -86,7 +86,9 @@ AccountModel::AccountModel(QObject* parent)
                      this, SLOT(accountUpdated(Accounts::AccountId)));
     QObject::connect(d->manager, SIGNAL(enabledEvent(Accounts::AccountId)),
                      this, SLOT(accountUpdated(Accounts::AccountId)));
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     setRoleNames(d->headerData);
+#endif
     Accounts::AccountIdList idList = d->manager->accountList();
     foreach (Accounts::AccountId id, idList)
     {
@@ -99,6 +101,14 @@ AccountModel::AccountModel(QObject* parent)
 AccountModel::~AccountModel()
 {
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+QHash<int, QByteArray> AccountModel::roleNames() const
+{
+    Q_D(const AccountModel);
+    return d->headerData;
+}
+#endif
 
 int AccountModel::rowCount(const QModelIndex &parent) const
 {
