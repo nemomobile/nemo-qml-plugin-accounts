@@ -30,6 +30,7 @@
  */
 
 #include <QObject>
+#include <QColor>
 #include <QtTest>
 
 #include "accountinterface.h"

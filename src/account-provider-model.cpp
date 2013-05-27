@@ -75,7 +75,9 @@ AccountProviderModel::AccountProviderModel(QObject* parent)
     d->headerData.insert(ProviderIconRole, "providerIcon");
     d->headerData.insert(ColumnCountRole, "columncount");
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     setRoleNames(d->headerData);
+#endif
     Accounts::Manager m;
     Accounts::ServiceList allServices = m.serviceList(); // force reload of service files.
     Accounts::ProviderList providers = m.providerList();
@@ -86,6 +88,14 @@ AccountProviderModel::AccountProviderModel(QObject* parent)
         d->providerList << providers[i];
     }
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+QHash<int, QByteArray> AccountProviderModel::roleNames() const
+{
+    Q_D(const AccountProviderModel);
+    return d->headerData;
+}
+#endif
 
 QVariant AccountProviderModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
